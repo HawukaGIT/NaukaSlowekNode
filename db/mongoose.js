@@ -26,8 +26,8 @@ async function dbconnect() {
     console.log(error);
     mongoose.disconnect().then(console.log("disconected"));
     // handleError(error);
-    //process.exit(1);
+    process.exit(1);
   }
 }
 
-dbconnect();
+export default dbconnect();
