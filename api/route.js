@@ -3,14 +3,12 @@ import listCtrl from "./lists.controller.js";
 import wordCtrl from "./words.controller.js";
 const router = express.Router();
 
-router.route("/api/test").get(listCtrl.test, listCtrl.test2);
-
 router.route("/api/word/").post(wordCtrl.addWord).get(wordCtrl.getWords);
 router
   .route("/api/word/:id")
-  .get(listCtrl.test)
+  .get(wordCtrl.getWord)
   .put(wordCtrl.updateWord)
-  .delete(listCtrl.test2);
+  .delete(wordCtrl.deleteWord);
 
 // router
 //   .route("/api/word/")

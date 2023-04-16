@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
-const MdbUser = process.env.Mongouser || "hawuka";
-const MdbPass = process.env.Mongopassword || "haseloHaselo";
-//const port = 27017;
+const MdbUser = process.env.MGUSER;
+const MdbPass = process.env.MGPASS;
 const uri = `mongodb+srv://${MdbUser}:${MdbPass}@slowka.qprfm5a.mongodb.net/test`;
 //retryWrites=true&w=majority
 //slowka.qprfm5a.mongodb.net/slowka ac-hqxnswg-shard-00-00.qprfm5a.mongodb.net/
