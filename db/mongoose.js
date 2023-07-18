@@ -4,7 +4,8 @@ dotenv.config();
 
 const MdbUser = process.env.MGUSER;
 const MdbPass = process.env.MGPASS;
-const uri = `mongodb+srv://${MdbUser}:${MdbPass}@slowka.qprfm5a.mongodb.net/test`;
+const URL = process.env.URL;
+const uri = `mongodb+srv://${MdbUser}:${MdbPass}@${URL}`;
 //retryWrites=true&w=majority
 //slowka.qprfm5a.mongodb.net/slowka ac-hqxnswg-shard-00-00.qprfm5a.mongodb.net/
 const options = {

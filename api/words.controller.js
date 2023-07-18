@@ -10,7 +10,7 @@ export default class wordCtrl {
         description: description,
       });
       const response = await newWord.save();
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy zapisie slowka: ${e}`);
@@ -20,8 +20,7 @@ export default class wordCtrl {
 
   static async getWords(req, res, next) {
     try {
-      const response = await Word.find({});
-      console.log(response);
+      const response = await Word.find({ owner: req.userId });
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy odczycie slówek: ${e}`);
@@ -33,7 +32,7 @@ export default class wordCtrl {
     try {
       let _id = req.params.id;
       const response = await Word.find({ _id: _id });
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy odczycie słówka: ${e}`);
@@ -45,7 +44,7 @@ export default class wordCtrl {
     try {
       let _id = req.params.id;
       const response = await Word.updateOne({ _id: _id }, req.body);
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error funkcji updateWord: ${e}`);
@@ -57,7 +56,7 @@ export default class wordCtrl {
     try {
       let _id = req.params.id;
       const response = await Word.deleteOne({ _id: _id });
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error funkcji deleteWord: ${e}`);

@@ -9,7 +9,7 @@ export default class listCtrl {
         description: description,
       });
       const response = await newList.save();
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy zapisie listy: ${e}`);
@@ -19,8 +19,7 @@ export default class listCtrl {
 
   static async getLists(req, res, next) {
     try {
-      const response = await List.find({});
-      console.log(response);
+      const response = await List.find({ owner: req.userId});
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy odczycie list: ${e}`);
@@ -32,7 +31,7 @@ export default class listCtrl {
     try {
       let _id = req.params.id;
       const response = await List.find({ _id: _id });
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy odczycie listy: ${e}`);
@@ -44,7 +43,7 @@ export default class listCtrl {
     try {
       let _id = req.params.id;
       const response = await List.updateOne({ _id: _id }, req.body);
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error funkcji updateList: ${e}`);
@@ -56,7 +55,7 @@ export default class listCtrl {
     try {
       let _id = req.params.id;
       const response = await List.deleteOne({ _id: _id });
-      console.log(response);
+      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error funkcji deleteList: ${e}`);

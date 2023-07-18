@@ -1,7 +1,9 @@
 import User from "../db/models/user.js";
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import listCtrl from "./lists.controller.js";
+import Role from "../db/models/role.js";
 dotenv.config();
 
 export default class userCtrl {
@@ -17,22 +19,26 @@ export default class userCtrl {
 
   static async CreateUser(req, res, next) {
     try {
-      const { login, email } = req.body;
+      const { login, email, password } = req.body;
       //sprawdzenie czy jest już taki user
-      const userExist = await this.getUser(login);
+      const userExist = await userCtrl.getUser(login);
       if (userExist)
         return res.status(400).json({
           err: `Login ${login} already exist`,
         });
       //hash password
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const role = await Role.findOne({ name: "user" });
+
       let newUser = new User({
         login: login,
         password: hashedPassword,
         email: email,
+        roles: [role],
       });
-      const userresponse = await User.save();
+      const userresponse = await newUser.save();
       console.log(userresponse);
       res.json({ status: "success" });
     } catch (e) {
@@ -44,7 +50,7 @@ export default class userCtrl {
     try {
       const login = req.body.login;
       //sprawdzenie czy jest taki user
-      const user = await ListsDAO.getUser(login);
+      const user = await userCtrl.getUser(login);
       if (!user)
         return res.status(400).json({
           err: `Login ${login} not exist`,
@@ -67,13 +73,50 @@ export default class userCtrl {
         },
         process.env["JWT_SECRET"]
       );
-
+      let maxAge = 24 * 60 * 1000;
+      res
+        .cookie("token", token, {
+          maxAge: maxAge,
+          httpOnly: true,
+          signed: true,
+        })
+        .cookie("user", user.login, { maxAge: maxAge });
       res.json({
-        msg: "User logged in",
-        token: token,
+        msg: `User ${user.login} logged in`,
       });
     } catch (e) {
       res.status(500).json({ error: e.message });
     }
   }
+
+  isAdmin = (req, res, next) => {
+    User.findById(req.userId).exec((err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+
+      Role.find(
+        {
+          _id: { $in: user.roles },
+        },
+        (err, roles) => {
+          if (err) {
+            res.status(500).send({ message: err });
+            return;
+          }
+
+          for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name === "admin") {
+              next();
+              return;
+            }
+          }
+
+          res.status(403).send({ message: "Require Admin Role!" });
+          return;
+        }
+      );
+    });
+  };
 }
