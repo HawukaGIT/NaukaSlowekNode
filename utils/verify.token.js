@@ -18,6 +18,14 @@ const verifyToken = (req, res, next) => {
           return res.status(401).send({ message: "Unauthorized!" });
         }
         req.userId = decoded._id;
+        let maxAge = 24 * 60 * 1000;
+        res
+          .cookie("token", token, {
+            maxAge: maxAge,
+            httpOnly: true,
+            signed: true,
+          })
+          .cookie("user", decoded.login, { maxAge: maxAge });
         next();
       }
     );

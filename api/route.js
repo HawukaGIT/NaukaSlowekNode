@@ -3,15 +3,15 @@ import listCtrl from "./lists.controller.js";
 import wordCtrl from "./words.controller.js";
 import userCtrl from "./users.controller.js";
 import VerifyToken from "../utils/verify.token.js";
-import verifyToken from "../utils/verify.token.js";
 const router = express.Router();
 
 router.route("/api/auth/signup/").post(userCtrl.CreateUser);
 router.route("/api/auth/signin/").post(userCtrl.loginUser);
+router.route("/api/auth/logout/").post(VerifyToken,userCtrl.logoutUser);
 
 router
   .route("/api/word/")
-  .all(verifyToken)
+  .all(VerifyToken)
   .post(wordCtrl.addWord)
   .get(wordCtrl.getWords);
 router
@@ -23,14 +23,14 @@ router
 
 router
   .route("/api/list/")
-  .all(verifyToken)
+  .all(VerifyToken)
   .get(listCtrl.getLists)
   .post(listCtrl.addList);
 
 
   router
   .route("/api/list/:id")
-  .all(verifyToken)
+  .all(VerifyToken)
   .get(listCtrl.getList)
   .put(listCtrl.updateList)
   .delete(listCtrl.deleteList);

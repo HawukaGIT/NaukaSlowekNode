@@ -89,6 +89,25 @@ export default class userCtrl {
     }
   }
 
+  static async logoutUser(req, res, next) {
+    try {
+      let token = 0;
+      let maxAge = 0;
+      res
+        .cookie("token", token, {
+          maxAge: maxAge,
+          httpOnly: true,
+          signed: true,
+        })
+        .cookie("user", "", { maxAge: maxAge });
+      res.json({
+        msg: `You logged out`,
+      });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  }
+
   isAdmin = (req, res, next) => {
     User.findById(req.userId).exec((err, user) => {
       if (err) {
