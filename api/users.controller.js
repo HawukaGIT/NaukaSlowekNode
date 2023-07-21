@@ -2,14 +2,13 @@ import User from "../db/models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import listCtrl from "./lists.controller.js";
 import Role from "../db/models/role.js";
 dotenv.config();
 
 export default class userCtrl {
   static async getUser(login) {
-    console.log(`pobieranie użytkownika: ${login}`);
     try {
+      console.log("getUser");
       return await User.findOne({ login: login });
     } catch (e) {
       console.error(`Unable to get user: ${e}`);
@@ -19,6 +18,7 @@ export default class userCtrl {
 
   static async CreateUser(req, res, next) {
     try {
+      console.log("CreateUser");
       const { login, email, password } = req.body;
       //sprawdzenie czy jest już taki user
       const userExist = await userCtrl.getUser(login);
@@ -48,6 +48,7 @@ export default class userCtrl {
 
   static async loginUser(req, res, next) {
     try {
+      console.log("loginUser");
       const login = req.body.login;
       //sprawdzenie czy jest taki user
       const user = await userCtrl.getUser(login);
@@ -73,7 +74,7 @@ export default class userCtrl {
         },
         process.env["JWT_SECRET"]
       );
-      let maxAge = 24 * 60 * 1000;
+      let maxAge = 60 * 1000;
       res
         .cookie("token", token, {
           maxAge: maxAge,
@@ -91,6 +92,7 @@ export default class userCtrl {
 
   static async logoutUser(req, res, next) {
     try {
+      console.log("logoutUser");
       let token = 0;
       let maxAge = 0;
       res
@@ -109,6 +111,7 @@ export default class userCtrl {
   }
 
   isAdmin = (req, res, next) => {
+    console.log("isAdmin");
     User.findById(req.userId).exec((err, user) => {
       if (err) {
         res.status(500).send({ message: err });

@@ -3,6 +3,7 @@ import Word from "../db/models/word.js";
 export default class wordCtrl {
   static async addWord(req, res, next) {
     try {
+      console.log("addWord");
       const { word, translation, description = "" } = req.body;
       const newWord = new Word({
         word: word,
@@ -20,6 +21,7 @@ export default class wordCtrl {
 
   static async getWords(req, res, next) {
     try {
+      console.log("getWords");
       const response = await Word.find({ owner: req.userId });
       res.status(200).json(response);
     } catch (e) {
@@ -30,9 +32,9 @@ export default class wordCtrl {
 
   static async getWord(req, res, next) {
     try {
+      console.log("getWord");
       let _id = req.params.id;
       const response = await Word.find({ _id: _id });
-      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error przy odczycie słówka: ${e}`);
@@ -42,9 +44,9 @@ export default class wordCtrl {
 
   static async updateWord(req, res, next) {
     try {
+      console.log("updateWord");
       let _id = req.params.id;
       const response = await Word.updateOne({ _id: _id }, req.body);
-      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error funkcji updateWord: ${e}`);
@@ -54,9 +56,9 @@ export default class wordCtrl {
 
   static async deleteWord(req, res, next) {
     try {
+      console.log("deleteWord");
       let _id = req.params.id;
       const response = await Word.deleteOne({ _id: _id });
-      //console.log(response);
       res.status(200).json(response);
     } catch (e) {
       console.log(`error funkcji deleteWord: ${e}`);
