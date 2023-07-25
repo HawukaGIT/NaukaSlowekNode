@@ -56,7 +56,7 @@ export default class listCtrl {
 
   static async deleteList(req, res, next) {
     try {
-      console.log("updateList");
+      console.log("deleteList");
       let _id = req.params.id;
       const response = await List.deleteOne({ _id: _id });
       res.status(200).json(response);

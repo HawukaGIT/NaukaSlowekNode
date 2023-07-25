@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.route("/api/auth/signup/").post(userCtrl.CreateUser);
 router.route("/api/auth/signin/").post(userCtrl.loginUser);
-router.route("/api/auth/logout/").post(VerifyToken,userCtrl.logoutUser);
+router.route("/api/auth/logout/").post(VerifyToken, userCtrl.logoutUser);
 
 router
   .route("/api/word/")
@@ -27,15 +27,12 @@ router
   .get(listCtrl.getLists)
   .post(listCtrl.addList);
 
-
-  router
+router
   .route("/api/list/:id")
   .all(VerifyToken)
   .get(listCtrl.getList)
   .put(listCtrl.updateList)
   .delete(listCtrl.deleteList);
-
-
 
 router.route("*").get((req, res, next) => {
   res.status(404).send("nieobsługiwany adres");
