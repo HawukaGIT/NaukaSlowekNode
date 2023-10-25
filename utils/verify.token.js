@@ -24,6 +24,7 @@ const verifyToken = (req, res, next) => {
             maxAge: maxAge,
             httpOnly: true,
             signed: true,
+            SameSite: None,
           })
           .cookie("user", decoded.login, { maxAge: maxAge });
         next();
