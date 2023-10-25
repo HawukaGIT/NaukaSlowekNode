@@ -80,6 +80,8 @@ export default class userCtrl {
           maxAge: maxAge,
           httpOnly: true,
           signed: true,
+          sameSite: "None",
+          secure: true,
         })
         .cookie("user", user.login, { maxAge: maxAge });
       res.json({
