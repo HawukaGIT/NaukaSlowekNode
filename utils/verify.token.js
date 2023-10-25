@@ -24,9 +24,14 @@ const verifyToken = (req, res, next) => {
             maxAge: maxAge,
             httpOnly: true,
             signed: true,
-            SameSite: None,
+            sameSite: "None",
+            secure: true,
           })
-          .cookie("user", decoded.login, { maxAge: maxAge, SameSite: None });
+          .cookie("user", decoded.login, {
+            maxAge: maxAge,
+            sameSite: "None",
+            secure: true,
+          });
         next();
       }
     );
