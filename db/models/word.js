@@ -7,9 +7,12 @@ const wordSchema = new mongoose.Schema({
   description: String,
   interval: { type: Number, default: 72000000 },
   lists: { type: [mongoose.Schema.Types.ObjectId], ref: List },
-  translation: { type: String, required: true },
+  translation: { type: [String], required: true },
   repeatTime: { type: Number, default: Date.now() + 72000000 },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: User },
+  badCount: { type: Number, default: 0 },
+  goodCount: { type: Number, default: 0 },
+  isFollow: { type: Boolean, default: true },
 });
 const Word = mongoose.model("Word", wordSchema);
 

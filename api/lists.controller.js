@@ -58,7 +58,6 @@ export default class listCtrl {
     try {
       console.log("deleteList");
       let _id = req.params.id;
-
       //najpierw usunac ze słówek wszystkie wpisy listy
       const response = await List.deleteOne({ _id: _id });
       res.status(200).json(response);
