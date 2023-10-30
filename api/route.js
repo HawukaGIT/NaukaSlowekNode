@@ -5,6 +5,11 @@ import userCtrl from "./users.controller.js";
 import VerifyToken from "../utils/verify.token.js";
 const router = express.Router();
 
+router.route("/test").get((req, res) => {
+  res.writeHead(200);
+  res.end("I'm HTTPS-enabled!");
+});
+
 router.route("/api/auth/signup/").post(userCtrl.CreateUser);
 router.route("/api/auth/signin/").post(userCtrl.loginUser);
 router.route("/api/auth/logout/").post(VerifyToken, userCtrl.logoutUser);
